@@ -1,5 +1,3 @@
-# src/model.py
-
 class Product:
     def __init__(self, name, description, price, quantity):
         self.name = name
@@ -43,7 +41,11 @@ class Category:
         if not self.products:  # Проверяем, есть ли товары в категории
             return 0.0  # Возвращаем 0, если товаров нет
         total_price = sum(product.price for product in self.products)
-        return total_price / len(self.products)  # Возвращаем среднюю цену
+        try:
+            average = total_price / len(self.products)  # Возвращаем среднюю цену
+        except ZeroDivisionError:
+            return 0.0  # Возвращаем 0, если деление на ноль
+        return average
 
     def __str__(self):
         return f"Category: {self.name}, Description: {self.description}, Average Price: {self.average_price()}"
@@ -76,9 +78,10 @@ if __name__ == "__main__":
     print("Product Count:", Category.product_count)
 
     # Пример использования итерации по категории
-    for product in category1:
+    for product in category1.products:
         print(product)
 
     # Проверка средней цены в категории без товаров
     print("Average price in category2:", category2.average_price())  # Ожидается 0.0
+
 
